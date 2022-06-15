@@ -13,7 +13,6 @@ export default function App() {
             <Link to="/signup">Signup</Link>
           </li>
         </ul>
-        <hr />
         <Main />
       </div>
     </>

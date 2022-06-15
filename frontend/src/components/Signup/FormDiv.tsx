@@ -1,14 +1,16 @@
 import styled from "@emotion/styled";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 import { SubmitButton } from "./Buttons";
 
 interface IFormInput {
   firstName: string;
-  // lastName: string;
-  // email: string;
-  // password: string;
-  // confirmPassword: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPwd: string;
 }
 
 const Container = styled.div`
@@ -86,16 +88,34 @@ const Error = styled.div`
 `;
 
 const FormDiv = () => {
+  const formSchema = Yup.object().shape({
+    firstName: Yup.string().required("Ce champ est requis"),
+    lastName: Yup.string().required("Ce champ est requis"),
+    email: Yup.string().required("Ce champ est requis").email("Adresse email invalide"),
+    password: Yup.string()
+      .required("Ce champ est requis")
+      .min(6, "Veuillez entrer 6 caractère(s) minimum"),
+    confirmPwd: Yup.string()
+      .required("Ce champ est requis")
+      .oneOf(
+        [Yup.ref("password")],
+        "Le mot de passe est différent du mot de passe de confirmation"
+      ),
+  });
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<IFormInput>({
+    mode: "all",
+    resolver: yupResolver(formSchema),
+  });
 
   const onSubmit = (data: IFormInput) => {
     alert(JSON.stringify(data));
-  }; // your form submit function which will invoke after successful validation
+  };
 
   return (
     <Container>
@@ -107,15 +127,79 @@ const FormDiv = () => {
           </DivFormLabel>
           <InputContainer>
             <Input
-              {...register("firstName", {
-                required: true,
-              })}
+              {...register("firstName")}
               className={errors?.firstName ? "inValid" : ""}
             />
             <InputIconContainer></InputIconContainer>
           </InputContainer>
-          {errors?.firstName?.type === "required" && (
-            <Error>Ce champ est requis</Error>
+          {errors?.firstName?.message && (
+            <Error>{errors?.firstName?.message}</Error>
+          )}
+        </DivFormGroup>
+        <DivFormGroup>
+          <DivFormLabel>
+            Votre nom
+            <DivRequiredField>*</DivRequiredField>
+          </DivFormLabel>
+          <InputContainer>
+            <Input
+              {...register("lastName")}
+              className={errors?.lastName ? "inValid" : ""}
+            />
+            <InputIconContainer></InputIconContainer>
+          </InputContainer>
+          {errors?.lastName?.message && (
+            <Error>{errors?.lastName?.message}</Error>
+          )}
+        </DivFormGroup>
+        <DivFormGroup>
+          <DivFormLabel>
+            Votre email
+            <DivRequiredField>*</DivRequiredField>
+          </DivFormLabel>
+          <InputContainer>
+            <Input
+              {...register("email")}
+              className={errors?.email ? "inValid" : ""}
+            />
+            <InputIconContainer></InputIconContainer>
+          </InputContainer>
+          {errors?.email?.message && (
+            <Error>{errors?.email?.message}</Error>
+          )}
+        </DivFormGroup>
+        <DivFormGroup>
+          <DivFormLabel>
+            Votre mot de passe
+            <DivRequiredField>*</DivRequiredField>
+          </DivFormLabel>
+          <InputContainer>
+            <Input
+              type="password"
+              {...register("password")}
+              className={errors?.password ? "inValid" : ""}
+            />
+            <InputIconContainer></InputIconContainer>
+          </InputContainer>
+          {errors?.password?.message && (
+            <Error>{errors?.password?.message}</Error>
+          )}
+        </DivFormGroup>
+        <DivFormGroup>
+          <DivFormLabel>
+            Confirmez votre mot de passe
+            <DivRequiredField>*</DivRequiredField>
+          </DivFormLabel>
+          <InputContainer>
+            <Input
+              type="password"
+              {...register("confirmPwd")}
+              className={errors?.confirmPwd ? "inValid" : ""}
+            />
+            <InputIconContainer></InputIconContainer>
+          </InputContainer>
+          {errors?.confirmPwd?.message && (
+            <Error>{errors?.confirmPwd?.message}</Error>
           )}
         </DivFormGroup>
         <DivFormGroup>

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useForm } from "react-hook-form";
 
-import { SubmitButton } from "./index";
+import { SubmitButton } from "./Buttons";
 
 interface IFormInput {
   firstName: string;

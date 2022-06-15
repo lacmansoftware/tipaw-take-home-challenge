@@ -3,9 +3,11 @@ import {
   FormWrapper,
   Divider,
   FormContainer,
-  GoogleButtonDiv,
-  FacebookButtonDiv,
 } from "../components/Signup";
+import {
+  GoogleButtonDiv, 
+  FacebookButtonDiv,
+} from "../components/Signup/Buttons";
 import FormDiv from "../components/Signup/FormDiv";
 
 const Signup = () => {

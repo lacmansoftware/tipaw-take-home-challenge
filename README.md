@@ -34,3 +34,19 @@ $ npm start
 $ cd frontend
 $ npm start
 ```
+### .env
+You can add .env file to change configuration in backend and frontend.
+- backend
+```console
+MONGODB_URI="<YOUR-MONGODB-URL>"
+FRONTEND_ENDPOINT="<FRONTEND-ENDPOINT>"
+PORT="<PORT-NUMBER>"
+```
+- frontend
+```console
+# development
+API_AUTH_ENDPOINT=<YOUR-API-AUTH-ENDPOINT>
+
+# production
+# API_AUTH_ENDPOINT=<YOUR--API-AUTH-ENDPOINT-IN-PRODUCTION>
+```

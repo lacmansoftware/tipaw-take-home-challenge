@@ -6,8 +6,8 @@ import * as Yup from "yup";
 import { SubmitButton } from "./Buttons";
 
 interface IFormInput {
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   email: string;
   password: string;
   confirmPwd: string;
@@ -160,8 +160,8 @@ const AlreadyExist = styled.div`
 
 const FormDiv = () => {
   const formSchema = Yup.object().shape({
-    firstName: Yup.string().required("Ce champ est requis"),
-    lastName: Yup.string().required("Ce champ est requis"),
+    firstname: Yup.string().required("Ce champ est requis"),
+    lastname: Yup.string().required("Ce champ est requis"),
     email: Yup.string()
       .required("Ce champ est requis")
       .email("Adresse email invalide"),
@@ -189,20 +189,35 @@ const FormDiv = () => {
 
   const onSubmit = (data: IFormInput) => {
     // const endpoint = process.env.URL_AUTH_ENDPOINT;
-    const endpoint = "https://localhost:5000/auth";
+    const endpoint = "http://192.168.108.85:5000/auth";
     fetch(`${endpoint}/signup`, {
       method: "post",
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
+      credentials: "same-origin",
+      headers: new Headers({ "content-type": "application/json" }),
       body: JSON.stringify(data),
-    }).then((response) => {
-      console.log(response)
-    }).catch((error) => {
-      console.log(error)
     })
-    alert(JSON.stringify(data));
+      .then(async (response) => {
+        const res = await response.json();
+        if (res.status === 'ok') {
+          alert(res.message);
+        }
+        if (res.status === 'validate-failed') {
+          const {validationErrors} = res;
+          type ValidationErorr = {
+            value: string;
+            msg: string;
+            param: string;
+            location: string;
+          }
+          validationErrors.map((item: ValidationErorr) => {
+            alert(item.msg);
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Failed");
+      });
   };
 
   return (
@@ -215,13 +230,13 @@ const FormDiv = () => {
           </DivFormLabel>
           <InputContainer>
             <Input
-              {...register("firstName")}
-              className={errors?.firstName ? "inValid" : ""}
+              {...register("firstname")}
+              className={errors?.firstname ? "inValid" : ""}
             />
             <InputIconContainer></InputIconContainer>
           </InputContainer>
-          {errors?.firstName?.message && (
-            <Error>{errors?.firstName?.message}</Error>
+          {errors?.firstname?.message && (
+            <Error>{errors?.firstname?.message}</Error>
           )}
         </DivFormGroup>
         <DivFormGroup>
@@ -231,13 +246,13 @@ const FormDiv = () => {
           </DivFormLabel>
           <InputContainer>
             <Input
-              {...register("lastName")}
-              className={errors?.lastName ? "inValid" : ""}
+              {...register("lastname")}
+              className={errors?.lastname ? "inValid" : ""}
             />
             <InputIconContainer></InputIconContainer>
           </InputContainer>
-          {errors?.lastName?.message && (
-            <Error>{errors?.lastName?.message}</Error>
+          {errors?.lastname?.message && (
+            <Error>{errors?.lastname?.message}</Error>
           )}
         </DivFormGroup>
         <DivFormGroup>

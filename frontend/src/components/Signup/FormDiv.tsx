@@ -11,6 +11,7 @@ interface IFormInput {
   email: string;
   password: string;
   confirmPwd: string;
+  agree: boolean;
 }
 
 const Container = styled.div`
@@ -173,6 +174,7 @@ const FormDiv = () => {
         [Yup.ref("password")],
         "Le mot de passe est différent du mot de passe de confirmation"
       ),
+    agree: Yup.boolean().oneOf([true], "Ce champ est requis"),
   });
 
   const {
@@ -274,7 +276,11 @@ const FormDiv = () => {
         </DivFormGroup>
         <DivFormGroup>
           <PolicyRow>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              {...register("agree")}
+              className={errors?.agree ? "inValid" : ""}
+            />
             <label>
               <span>
                 <p>
@@ -290,6 +296,7 @@ const FormDiv = () => {
               </span>
             </label>
           </PolicyRow>
+          {errors?.agree?.message && <Error>{errors?.agree?.message}</Error>}
         </DivFormGroup>
         <DivFormGroup>
           <SubmitButton type="submit">S'inscrire</SubmitButton>

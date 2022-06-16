@@ -4,6 +4,7 @@ const { validationResult } = require("express-validator");
 const User = require("../models/user");
 
 exports.postSignup = (req, res, next) => {
+  // Check if validation occurs errors
   const errorsVal = validationResult(req);
   if (!errorsVal.isEmpty()) {
     return res.status(422).json({

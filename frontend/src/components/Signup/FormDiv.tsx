@@ -45,8 +45,14 @@ const InputContainer = styled.div`
   width: 100%;
   block-size: fit-content;
 
+  & > input {
+    :focus {
+      outline: none;
+    }
+  }
+
   :focus-within > input {
-    border-color: #5acee8 !important;
+    border-color: #5acee8;
   }
 `;
 
@@ -87,11 +93,77 @@ const Error = styled.div`
   text-align: left;
 `;
 
+const PolicyRow = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  & > input {
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    text-align: left;
+    color: #707070;
+    opacity: 1;
+
+    :focus {
+      outline: none;
+    }
+  }
+
+  & > label {
+    margin-left: 10px;
+    color: #616b77;
+    font-weight: 500;
+    font-size: 14px;
+    text-align: left;
+
+    & > span {
+      display: inline;
+
+      & > p {
+        margin: 0;
+
+        & > a {
+          text-decoration: none;
+          cursor: pointer;
+          color: inherit;
+          font-weight: inherit;
+
+          :hover {
+            color: rgb(90, 206, 232);
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+`;
+
+const AlreadyExist = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 12px;
+
+  & > span {
+    color: #707070;
+  }
+
+  & > a {
+    color: rgb(90, 206, 232);
+    font-weight: 700;
+    margin-left: 12px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+`;
+
 const FormDiv = () => {
   const formSchema = Yup.object().shape({
     firstName: Yup.string().required("Ce champ est requis"),
     lastName: Yup.string().required("Ce champ est requis"),
-    email: Yup.string().required("Ce champ est requis").email("Adresse email invalide"),
+    email: Yup.string()
+      .required("Ce champ est requis")
+      .email("Adresse email invalide"),
     password: Yup.string()
       .required("Ce champ est requis")
       .min(6, "Veuillez entrer 6 caractère(s) minimum"),
@@ -164,9 +236,7 @@ const FormDiv = () => {
             />
             <InputIconContainer></InputIconContainer>
           </InputContainer>
-          {errors?.email?.message && (
-            <Error>{errors?.email?.message}</Error>
-          )}
+          {errors?.email?.message && <Error>{errors?.email?.message}</Error>}
         </DivFormGroup>
         <DivFormGroup>
           <DivFormLabel>
@@ -203,7 +273,32 @@ const FormDiv = () => {
           )}
         </DivFormGroup>
         <DivFormGroup>
+          <PolicyRow>
+            <input type="checkbox" />
+            <label>
+              <span>
+                <p>
+                  J'ai lu et accepté les{" "}
+                  <a
+                    target="_blank"
+                    href="https://tipaw.com/conditions-generales-d-utilisation"
+                  >
+                    conditions générales d'utilisation
+                  </a>{" "}
+                  de Tipaw
+                </p>
+              </span>
+            </label>
+          </PolicyRow>
+        </DivFormGroup>
+        <DivFormGroup>
           <SubmitButton type="submit">S'inscrire</SubmitButton>
+        </DivFormGroup>
+        <DivFormGroup>
+          <AlreadyExist>
+            <span>Vous avez déjà un compte?</span>
+            <a href="https://tipaw.com/connexion">S'identifier</a>
+          </AlreadyExist>
         </DivFormGroup>
       </form>
     </Container>

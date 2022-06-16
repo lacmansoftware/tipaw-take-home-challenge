@@ -188,6 +188,20 @@ const FormDiv = () => {
   });
 
   const onSubmit = (data: IFormInput) => {
+    // const endpoint = process.env.URL_AUTH_ENDPOINT;
+    const endpoint = "https://localhost:5000/auth";
+    fetch(`${endpoint}/signup`, {
+      method: "post",
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      console.log(response)
+    }).catch((error) => {
+      console.log(error)
+    })
     alert(JSON.stringify(data));
   };
 

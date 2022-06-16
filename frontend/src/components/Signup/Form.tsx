@@ -4,6 +4,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 import { SubmitButton } from "./Buttons";
+import {
+  FormGroup, 
+  FormLabel,
+  RequiredField, 
+  InputContainer, 
+  Input, 
+  InputIconContainer, 
+  Error, 
+  PolicyRow, 
+  AlreadyExist, 
+} from "./index"
 
 interface IFormInput {
   firstname: string;
@@ -18,147 +29,7 @@ const Container = styled.div`
   margin-top: 25px;
 `;
 
-const DivFormGroup = styled.div`
-  margin-bottom: 15px;
-  vertical-align: top;
-  width: calc(100% - 0px);
-  display: block;
-`;
-
-const DivFormLabel = styled.div`
-  margin-bottom: 6px;
-  text-align: left;
-  font-weight: 600;
-  color: #8c96a3;
-  font-size: 14px;
-  font-weight: 700;
-`;
-
-const DivRequiredField = styled.div`
-  color: #ff453e;
-  margin-left: 6px;
-  display: inline-block;
-`;
-
-const InputContainer = styled.div`
-  position: relative;
-  height: fit-content;
-  width: 100%;
-  block-size: fit-content;
-
-  & > input {
-    :focus {
-      outline: none;
-    }
-  }
-
-  :focus-within > input {
-    border-color: #5acee8;
-  }
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 7px 12px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: 2px solid #d7dae0;
-  color: #707070 !important;
-  background: white;
-  padding-right: 42px;
-
-  &.inValid {
-    border-color: rgb(255, 69, 62) !important;
-  }
-`;
-
-const InputIconContainer = styled.div`
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #707070;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-`;
-
-const Error = styled.div`
-  margin-top: 5px;
-  font-size: 12px;
-  font-weight: 600;
-  color: rgb(255, 69, 62);
-  text-align: left;
-`;
-
-const PolicyRow = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  & > input {
-    cursor: pointer;
-    width: 15px;
-    height: 15px;
-    text-align: left;
-    color: #707070;
-    opacity: 1;
-
-    :focus {
-      outline: none;
-    }
-  }
-
-  & > label {
-    margin-left: 10px;
-    color: #616b77;
-    font-weight: 500;
-    font-size: 14px;
-    text-align: left;
-
-    & > span {
-      display: inline;
-
-      & > p {
-        margin: 0;
-
-        & > a {
-          text-decoration: none;
-          cursor: pointer;
-          color: inherit;
-          font-weight: inherit;
-
-          :hover {
-            color: rgb(90, 206, 232);
-            text-decoration: underline;
-          }
-        }
-      }
-    }
-  }
-`;
-
-const AlreadyExist = styled.div`
-  width: 100%;
-  text-align: center;
-  margin-top: 12px;
-
-  & > span {
-    color: #707070;
-  }
-
-  & > a {
-    color: rgb(90, 206, 232);
-    font-weight: 700;
-    margin-left: 12px;
-    text-decoration: none;
-    cursor: pointer;
-  }
-`;
-
-const FormDiv = () => {
+const Form = () => {
   const formSchema = Yup.object().shape({
     firstname: Yup.string().required("Ce champ est requis"),
     lastname: Yup.string().required("Ce champ est requis"),
@@ -188,8 +59,7 @@ const FormDiv = () => {
   });
 
   const onSubmit = (data: IFormInput) => {
-    // const endpoint = process.env.URL_AUTH_ENDPOINT;
-    const endpoint = "http://192.168.108.85:5000/auth";
+    const endpoint = process.env.API_AUTH_ENDPOINT || "http://localhost:5000/auth";
     fetch(`${endpoint}/signup`, {
       method: "post",
       credentials: "same-origin",
@@ -223,11 +93,11 @@ const FormDiv = () => {
   return (
     <Container>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DivFormGroup>
-          <DivFormLabel>
+        <FormGroup>
+          <FormLabel>
             Votre prénom
-            <DivRequiredField>*</DivRequiredField>
-          </DivFormLabel>
+            <RequiredField>*</RequiredField>
+          </FormLabel>
           <InputContainer>
             <Input
               {...register("firstname")}
@@ -238,12 +108,12 @@ const FormDiv = () => {
           {errors?.firstname?.message && (
             <Error>{errors?.firstname?.message}</Error>
           )}
-        </DivFormGroup>
-        <DivFormGroup>
-          <DivFormLabel>
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>
             Votre nom
-            <DivRequiredField>*</DivRequiredField>
-          </DivFormLabel>
+            <RequiredField>*</RequiredField>
+          </FormLabel>
           <InputContainer>
             <Input
               {...register("lastname")}
@@ -254,12 +124,12 @@ const FormDiv = () => {
           {errors?.lastname?.message && (
             <Error>{errors?.lastname?.message}</Error>
           )}
-        </DivFormGroup>
-        <DivFormGroup>
-          <DivFormLabel>
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>
             Votre email
-            <DivRequiredField>*</DivRequiredField>
-          </DivFormLabel>
+            <RequiredField>*</RequiredField>
+          </FormLabel>
           <InputContainer>
             <Input
               {...register("email")}
@@ -268,12 +138,12 @@ const FormDiv = () => {
             <InputIconContainer></InputIconContainer>
           </InputContainer>
           {errors?.email?.message && <Error>{errors?.email?.message}</Error>}
-        </DivFormGroup>
-        <DivFormGroup>
-          <DivFormLabel>
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>
             Votre mot de passe
-            <DivRequiredField>*</DivRequiredField>
-          </DivFormLabel>
+            <RequiredField>*</RequiredField>
+          </FormLabel>
           <InputContainer>
             <Input
               type="password"
@@ -285,12 +155,12 @@ const FormDiv = () => {
           {errors?.password?.message && (
             <Error>{errors?.password?.message}</Error>
           )}
-        </DivFormGroup>
-        <DivFormGroup>
-          <DivFormLabel>
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>
             Confirmez votre mot de passe
-            <DivRequiredField>*</DivRequiredField>
-          </DivFormLabel>
+            <RequiredField>*</RequiredField>
+          </FormLabel>
           <InputContainer>
             <Input
               type="password"
@@ -302,8 +172,8 @@ const FormDiv = () => {
           {errors?.confirmPwd?.message && (
             <Error>{errors?.confirmPwd?.message}</Error>
           )}
-        </DivFormGroup>
-        <DivFormGroup>
+        </FormGroup>
+        <FormGroup>
           <PolicyRow>
             <input
               type="checkbox"
@@ -326,19 +196,19 @@ const FormDiv = () => {
             </label>
           </PolicyRow>
           {errors?.agree?.message && <Error>{errors?.agree?.message}</Error>}
-        </DivFormGroup>
-        <DivFormGroup>
+        </FormGroup>
+        <FormGroup>
           <SubmitButton type="submit">S'inscrire</SubmitButton>
-        </DivFormGroup>
-        <DivFormGroup>
+        </FormGroup>
+        <FormGroup>
           <AlreadyExist>
             <span>Vous avez déjà un compte?</span>
             <a href="https://tipaw.com/connexion">S'identifier</a>
           </AlreadyExist>
-        </DivFormGroup>
+        </FormGroup>
       </form>
     </Container>
   );
 };
 
-export default FormDiv;
+export default Form;

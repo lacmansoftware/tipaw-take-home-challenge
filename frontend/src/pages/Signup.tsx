@@ -8,7 +8,7 @@ import {
   GoogleButtonDiv, 
   FacebookButtonDiv,
 } from "../components/Signup/Buttons";
-import FormDiv from "../components/Signup/FormDiv";
+import Form from "../components/Signup/Form";
 
 const Signup = () => {
   return (
@@ -24,7 +24,7 @@ const Signup = () => {
           </div>
           <GoogleButtonDiv />
           <FacebookButtonDiv />
-          <FormDiv />
+          <Form />
         </FormContainer>
       </FormWrapper>
     </SignupContainer>

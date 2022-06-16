@@ -3,7 +3,6 @@ import GoogleImage from "../../assets/google-icon-3SWGK4VN.svg";
 
 const ButtonWrapper = styled.div`
   margin-bottom: 15px;
-  vertical-align: top;
   width: calc(100% - 0px);
   display: block;
 `;
